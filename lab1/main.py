@@ -1,72 +1,70 @@
+
+from turtle import pendown
+import matplotlib.pyplot as plt
+from utils import get_kinetic_energy, get_potential_energy
+from pendulum import Pendulum
 import numpy as np
-from animator import Animator
 
-from plotter import Plotter
+from const import G, R, M, DT
 
-G = 9.81
-R = 1
-M = 1
-DT = 0.01
+def plot_energy(pendulum: Pendulum, times: np.ndarray, angle: float, r: np.ndarray):
+    K = get_kinetic_energy(M, pendulum.vphi * R)
+    P = get_potential_energy(M, r[1, :] + R)
+    E = K + P
+    plt.plot(times, E, label="Total Energy")
+    plt.plot(times, K, label="Kinetic Energy")
+    plt.plot(times, P, label="Potential Energy")
+    plt.xlabel("Time [s]")
+    plt.ylabel("Energy [J]")
+    plt.legend()
+    plt.savefig(f"output/ex2_{angle}.png")
+    plt.show()
 
-def pendulum_func(_: float, vars: np.ndarray) -> np.ndarray:
-    return np.array([vars[1], -G/R*np.sin(vars[0])])
 
-def rk4_solve(t, vars: np.ndarray, func) -> np.ndarray:
-    k1 = func(t, vars)
-    k2 = func(t + DT/2, vars + DT/2*k1)
-    k3 = func(t + DT/2, vars + DT/2*k2)
-    k4 = func(t + DT, vars + DT*k3)
-    return DT/6*(k1 + 2*k2 + 2*k3 + k4)
-    
+def plot_phase(pendulum: Pendulum, angle: float):
+    plt.plot(pendulum.phi, pendulum.vphi)
+    plt.savefig(f"output/ex2_phase{angle}.png")
+    plt.show()
 
-class Pendulum:
-    def __init__(self, phi0, vphi0, max_time = 300):
-        self.vars = np.array([phi0, vphi0])
-        self.t = 0
-        self.data = np.zeros(max_time)
-        self.max_time = max_time
+def teot_pendelum(A: float, times: np.ndarray)->np.ndarray:
+    return A*np.cos(times * (G / R)**0.5)
 
-    def get_coordinates(self) -> np.ndarray:
-        return np.array([R * np.sin(self.data), -R * np.cos(self.data)])
 
-    def run(self):
-        for i in range(self.max_time):
-            self.t += DT
-            self.vars += rk4_solve(self.t, self.vars, pendulum_func)
-            self.data[i] = self.vars[0]
+def first_exercise(angle: float, animate: bool = False):
+    pendulum = Pendulum(np.radians(angle), 0, 1000)
+    pendulum.run()
+    if animate:
+        pendulum.animate()
+    times = np.linspace(0, 10, 1000)
+    plt.plot(times, pendulum.phi, label="numeric")
+    plt.plot(times, teot_pendelum(np.radians(angle), times), label="analytic")
+    plt.legend()
+    plt.savefig("output/ex1.png")
+    plt.show()
+    plt.plot(times, pendulum.phi - teot_pendelum(np.radians(angle), times))
+    plt.savefig("output/ex1_diff.png")
+    plt.show()
 
-    def plot(self):
-        cord = self.get_coordinates()
-        plotter = Plotter(cord[0], cord[1], {
-            "xlabel": "x",
-            "ylabel": "y",
-            "title": "Pendulum",
-            "xmin": -1,
-            "xmax": 1,
-            "ymin": -1.5,
-            "ymax": 0.5
-        })
-        plotter.plot()
-        plotter.save("output/tor.png")
+def second_exercise(angle: float):
+    pendulum = Pendulum(np.radians(angle), 0, 1000)
+    pendulum.run()
+    r = pendulum.get_coordinates()
+    times = np.linspace(0, 10, 1000)
+    plot_energy(pendulum, times, angle, r)
 
-    def animate(self):
-        coordinates = self.get_coordinates()
-        animator = Animator(coordinates[0, :],coordinates[1, :], {
-            "frames": self.max_time,
-            "xmin": -1,
-            "xmax": 1,
-            "ymin": -1.5,
-            "ymax": 0.,
-            "interval": 30,
-            })
-        animator.run()
+
+
+
+
+def main() -> None:
+    first_exercise(4, animate=False)
+    angles = [45, 90, 135, 175]
+    # energy_plt, axes = plt.subplots(len(angles), 1)
+
+    for angle in angles:
+
+        second_exercise(angle)
+
 
 if __name__ == "__main__":
-    pendulum = Pendulum(0.7, 0., 500)
-    pendulum.run()
-    pendulum.animate()
-
-
-
-
-        
+    main()
