@@ -57,10 +57,8 @@ def second_exercise(angle: float, energy_ax: plt.Axes, phase_ax: plt.Axes):
 
 
 
-
-
 def main() -> None:
-    first_exercise(4, animate=False)
+    first_exercise(10, animate=True)
     angles = [45, 90, 135, 175]
     energy_plt, Eaxes = plt.subplots(2, 2)
     phase_plt, Paxes = plt.subplots(2, 2)
