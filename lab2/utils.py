@@ -54,7 +54,7 @@ def get_cone(x_obj: np.ndarray, y_obj: np.ndarray) -> tuple[np.ndarray, np.ndarr
     step = 0.05
     xlim = max([np.abs(x_obj.min()), np.abs(x_obj.max())])
     ylim = max([np.abs(y_obj.min()), np.abs(y_obj.max())])
-    mlim = max([xlim, ylim])
+    mlim = max([xlim, ylim]) / 2
     X = np.arange(-mlim, mlim, step)
     Y = np.arange(-mlim, mlim, step)
     num_steps = len(X)

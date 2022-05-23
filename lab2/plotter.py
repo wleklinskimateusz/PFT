@@ -18,8 +18,8 @@ class Plotter:
         ax.set_xlabel('x')
         ax.set_ylabel('y')
         ax.set_zlabel('z')
-        # cx, cy, cz = get_cone(x, y)
-        # ax.plot_surface(cx, cy, cz, color='b', alpha=0.2)
+        cx, cy, cz = get_cone(x, y)
+        ax.plot_surface(cx, cy, cz, color='b', alpha=0.2)
         fig.savefig('output/trajectory.png')
 
     def plot_energy(self):
