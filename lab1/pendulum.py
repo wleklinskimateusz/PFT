@@ -29,6 +29,19 @@ class Pendulum:
     def get_coordinates(self) -> np.ndarray:
         return np.array([R * np.sin(self.phi), -R * np.cos(self.phi)])
 
+    def get_periods(self):
+        counter = 0
+        amps = []
+        is_positive = False
+        for i in range(self.max_time):
+            if self.vphi[i] > 0 and not is_positive:
+                amps.append(i)
+                is_positive = True
+            elif self.vphi[i] < 0 and is_positive:
+                is_positive = False
+        periods = [amps[i+1] - amps[i] for i in range(len(amps)-1)]
+        return np.array(periods) * DT
+
     def run(self):
         for i in range(self.max_time):
             self.t += DT
