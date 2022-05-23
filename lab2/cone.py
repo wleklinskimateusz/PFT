@@ -17,7 +17,7 @@ class BodyOnCone:
         self.steps = steps
         self.energies = np.zeros(steps)
 
-    def get_coordinates(self, rotate: bool = False) -> list:
+    def get_coordinates(self, rotate: bool = False) -> np.ndarray:
         R = get_rotation_matrix()
         rho = get_rho(self.z)
         x = np.array([get_x(rho, self.phi), get_y(rho, self.phi), self.z])

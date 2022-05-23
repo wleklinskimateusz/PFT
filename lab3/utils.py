@@ -1,4 +1,5 @@
 import numpy as np
+import os
 
 from const import DT, M, Q, B
 
@@ -20,3 +21,7 @@ def get_derrivatives(t, vars: np.ndarray) -> np.ndarray:
         0,
         0
     ])
+
+def make_dir(dir_name):
+    if not os.path.exists(dir_name):
+        os.mkdir(dir_name)
