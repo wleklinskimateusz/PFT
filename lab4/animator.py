@@ -21,15 +21,16 @@ class Animator:
 
     def update(self, i):
 
-        if i % 10==0:
-            print(f"Frame: {i}, {i/10}%")
-            print(self.solver.vars[:N+2, 5*i])
-        self.xdata = self.solver.vars[:N+2, 5*i]
+        if i % 100 == 0:
+            print(f"Frame: {i}, {200*i/self.solver.nt}%")
+            # print(self.solver.vars[:, 2*i])
+        self.xdata = self.solver.vars[:N+2, 2*i]
         self.ln.set_data(self.xdata, self.ydata)
         return self.ln
 
     def animate(self):
-        ani = FuncAnimation(self.fig, self.update, frames=self.solver.nt//5, init_func=self.init)
+        ani = FuncAnimation(self.fig, self.update,
+                            frames=self.solver.nt//2, init_func=self.init)
         print("Saving animation...")
-        ani.save("atoms.gif")
+        ani.save("atoms.gif", fps=30)
         print("Saved!")

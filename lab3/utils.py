@@ -1,3 +1,4 @@
+from matplotlib import pyplot as plt
 import numpy as np
 import os
 
@@ -24,4 +25,10 @@ def get_derrivatives(t, vars: np.ndarray) -> np.ndarray:
 
 def make_dir(dir_name):
     if not os.path.exists(dir_name):
+        print("Creating directory: {}".format(dir_name))
         os.mkdir(dir_name)
+
+def legend_without_duplicate_labels(figure):
+    handles, labels = plt.gca().get_legend_handles_labels()
+    by_label = dict(zip(labels, handles))
+    figure.legend(by_label.values(), by_label.keys(), loc='lower right')

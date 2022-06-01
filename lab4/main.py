@@ -2,17 +2,20 @@ from matplotlib import pyplot as plt
 import numpy as np
 from animator import Animator
 from const import N
+from utils import show_frame
+from plotter import Plotter
 from solver import Solver
 
 
 def main():
-    s = Solver()
+    s = Solver(1000)
     s.initialize_gaussian()
-    plt.scatter(s.vars[:N+2, 0], np.zeros(N+2))
-    plt.show()
+
     s.calculate()
-    a = Animator(s)
-    a.animate()
+    # a = Animator(s)
+    # a.animate()
+    p = Plotter(s)
+    p.plot_energy()
 
 if __name__ == "__main__":
     main()

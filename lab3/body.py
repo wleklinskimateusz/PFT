@@ -29,7 +29,6 @@ class Body:
             self.pphi[i] = self.vars[4]
             self.pz[i] = self.vars[5]
             self.vars += rk4_solve(self.t, self.vars, get_derrivatives)
-            print(self.vars)
         print("Finished running")
 
     def get_energy(self):
