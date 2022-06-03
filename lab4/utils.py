@@ -55,7 +55,12 @@ def get_starting_gaussian(i):
     return x0 + (DELTA / 3) * np.exp(-((x0 - xmax/2)**2) / (2 * (3 * DELTA)**2))
 
 def show_frame(vars, title: str = ""):
-    plt.plot(vars[:N+2], np.zeros(N+2), 'ro')
+    dx = np.zeros(N+1)
+    for i in range(N+1):
+        dx[i] = vars[i] - get_xi0(i)
+    x = np.linspace(0, N*DELTA, N+1)
+    plt.plot(x, dx)
+    # plt.plot(vars[:N+2], np.zeros(N+2), 'ro')
     plt.title(title)
     plt.show()
 

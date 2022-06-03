@@ -12,10 +12,11 @@ def main():
     s.initialize_gaussian()
 
     s.calculate()
-    # a = Animator(s)
-    # a.animate()
+    a = Animator(s)
+    a.animate()
     p = Plotter(s)
     p.plot_energy()
+    p.plot_xmap()
 
 if __name__ == "__main__":
     main()

@@ -1,6 +1,6 @@
 import numpy as np
 from const import ALPHA, DELTA, DT, M, N
-from utils import get_starting_gaussian, rk4_solve, show_frame
+from utils import get_starting_gaussian, get_xi0, rk4_solve, show_frame
 
 
 class Solver:
@@ -19,8 +19,8 @@ class Solver:
         for i in range(self.nt-1):
             self.t += DT
             self.vars[:, i+1] = rk4_solve(self.t, self.vars[:, i])
-            # show_frame(self.vars[:, i], "before")
-            # show_frame(self.vars[:, i+1], "after")
+            # show_fr
+            # self.vars[:, i+1], "after")
 
     def get_kinetic_energy(self):
         Ek=np.zeros(self.nt)
@@ -35,3 +35,10 @@ class Solver:
         return Ep
     def get_total_energy(self):
         return self.get_kinetic_energy() + self.get_potential_energy()
+
+    def get_diffs(self):
+        output = np.zeros((N+1, self.nt))
+        for i in range(N):
+            for j in range(self.nt):
+                output[i, j] = self.vars[i, j] - get_xi0(i)
+        return output
