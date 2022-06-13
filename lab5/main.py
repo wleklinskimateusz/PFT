@@ -15,6 +15,7 @@ def main():
     p.plot_last_frame()
     p.plot_Vz()
     p.plot_Vrho()
+    p.plot3d_V()
 
 
 if __name__ == "__main__":
